@@ -1,0 +1,128 @@
+Paquetes:
+
+Microsoft.Data.SqlClient
+
+Dapper
+
+Swashbuckle.AspNetCore
+
+//Service Area
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+// middleware
+app.UseSwagger();
+app.UseSwaggerUI();
+
+
+
+
+Cors:
+
+builder.Services.AddCors(options =>
+{
+	options.AddPolicy("NuevaPolitica", app =>
+	{
+		app.AllowAnyOrigin()
+		.AllowAnyHeader()
+		.AllowAnyMethod();
+	});
+});
+
+app.UseCors("NuevaPolitica");
+
+
+
+
+
+
+
+crear base de datos:
+
+CREATE DATABASE MinimalApiConDapper;
+
+USE MinimalApiConDapper;
+
+CREATE TABLE Articulo (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Descripcion VARCHAR(255),
+    FechaIngreso DATE,
+    Estado BIT,
+    FechaVencimiento DATE NULL,
+    Cantidad INT,
+    Costo DECIMAL(18,2)
+);
+
+CREATE TABLE TipoTransaccion (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Descripcion VARCHAR(255)
+);
+
+CREATE TABLE Estado (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Descripcion VARCHAR(255)
+);
+
+CREATE TABLE Transaccion (
+    Id INT PRIMARY KEY,
+    Descripcion VARCHAR(255) NULL,
+    TipoTransaccionId INT,
+    ArticuloId INT,
+    FechaDocumento DATE,
+    EstadoId INT,
+    Cantidad INT,
+    CostoTotal DECIMAL(18,2),
+    FOREIGN KEY (TipoTransaccionId) REFERENCES TipoTransaccion(Id),
+    FOREIGN KEY (ArticuloId) REFERENCES Articulo(Id),
+    FOREIGN KEY (EstadoId) REFERENCES Estado(Id)
+);
+
+
+
+
+
+insertar datos
+
+
+
+INSERT INTO Articulo (Descripcion, FechaIngreso, Estado, FechaVencimiento, Cantidad, Costo)
+VALUES 
+    ('Articulo 1', '2022-01-01', 1, '2022-12-31', 100, 50.00),
+    ('Articulo 2', '2022-02-01', 0, NULL, 50, 25.00),
+    ('Articulo 3', '2022-03-01', 1, '2022-11-30', 75, 30.00);
+
+
+INSERT INTO TipoTransaccion (Descripcion)
+VALUES 
+    ('Entrada'),
+    ('Salida');
+
+
+INSERT INTO Estado (Descripcion)
+VALUES 
+    ('Activo'),
+    ('Inactivo');
+
+
+INSERT INTO Transaccion (Id, Descripcion, TipoTransaccionId, ArticuloId, FechaDocumento, EstadoId, Cantidad, CostoTotal)
+VALUES 
+    (1, 'Transaccion 1', 1, 1, '2022-05-01', 1, 20, 1000.00),
+    (2, 'Transaccion 2', 2, 2, '2022-06-15', 2, 15, 375.00),
+    (3, 'Transaccion 3', 1, 3, '2022-08-20', 1, 30, 900.00);
+
+
+
+
+
+probar conexion
+
+		public Task<int> CrearTransaccion(Transaccion transaccion)
+		{
+			using (var connection = new SqlConnection(connectionString))
+			{
+				var query = connection.Query("SELECT 1").FirstOrDefault();
+			}
+
+			return Task.FromResult(0);
+		}
+

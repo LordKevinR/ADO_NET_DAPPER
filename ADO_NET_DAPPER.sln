@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34309.116
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADO_NET_DAPPER", "ADO_NET_DAPPER\ADO_NET_DAPPER.csproj", "{751BB476-1566-46EF-BD6C-166BC346C90F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{751BB476-1566-46EF-BD6C-166BC346C90F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{751BB476-1566-46EF-BD6C-166BC346C90F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{751BB476-1566-46EF-BD6C-166BC346C90F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{751BB476-1566-46EF-BD6C-166BC346C90F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C3601E4A-4B3A-416B-8497-4D3E6BAFBB5D}
+	EndGlobalSection
+EndGlobal
