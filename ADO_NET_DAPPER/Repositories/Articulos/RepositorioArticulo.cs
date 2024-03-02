@@ -1,6 +1,7 @@
 ﻿using ADO_NET_DAPPER.Entities;
 using Dapper;
 using Microsoft.Data.SqlClient;
+using System.Data;
 
 namespace ADO_NET_DAPPER.Repositories.Articulos
 {
@@ -36,7 +37,7 @@ namespace ADO_NET_DAPPER.Repositories.Articulos
 		{
 			using (var connection = new SqlConnection(connectionString))
 			{
-				var articulos = await connection.QueryAsync<Articulo>(@"SELECT * FROM Articulo");
+				var articulos = await connection.QueryAsync<Articulo>("Articulos_ObtenerTodos", commandType: CommandType.StoredProcedure);
 				return articulos.ToList();
 			}
 		}
@@ -54,13 +55,43 @@ namespace ADO_NET_DAPPER.Repositories.Articulos
 		{
 			using(var connection = new SqlConnection(connectionString))
 			{
-				var existe = await connection.Query
+				var existe = await connection
+					.QuerySingleAsync<bool>
+					(@"IF EXISTS (SELECT 1 FROM Articulo WHERE Id = @Id)
+						SELECT 1
+					ELSE
+						SELECT 0", new {id});
+
+				return existe;
 			}
 		}
 
-		public Task Actualizar(Articulo articulo)
+		public async Task Actualizar(Articulo articulo)
 		{
-			throw new NotImplementedException();
+			using (var connection = new SqlConnection(connectionString))
+			{
+				await connection.ExecuteAsync(@"UPDATE Articulo
+												SET 
+												Descripcion = @Descripcion,
+												FechaIngreso = @FechaIngreso,
+												Estado = @Estado,
+												FechaVencimiento = @FechaVencimiento,
+												Cantidad = @Cantidad,
+												Costo = @Costo
+												WHERE Id = @id
+												", articulo);
+
+
+			}
+		}
+
+		public async Task Borrar(int id)
+		{
+			using(var connection = new SqlConnection(connectionString))
+			{
+				await connection.ExecuteAsync(@"DELETE Articulo
+												WHERE Id = @Id", new {id});
+			}
 		}
 	}
 }

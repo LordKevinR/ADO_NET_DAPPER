@@ -9,5 +9,6 @@ namespace ADO_NET_DAPPER.Repositories.Articulos
 		Task<List<Articulo>> ObtenerTodos();
 		Task<bool> Existe(int id);
 		Task Actualizar(Articulo articulo);
+		Task Borrar(int id);
 	}
 }
