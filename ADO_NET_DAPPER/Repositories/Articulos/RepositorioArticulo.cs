@@ -18,14 +18,18 @@ namespace ADO_NET_DAPPER.Repositories.Articulos
 		{
 			using (var connection = new SqlConnection(connectionString))
 			{
-				var id = await connection.QuerySingleAsync<int>      //QuerySingleAsycn es para 
-					(@"INSERT INTO Articulo 
-					(Descripcion, FechaIngreso, Estado, FechaVencimiento, Cantidad, Costo) 
-					VALUES
-					(@Descripcion, @FechaIngreso, @Estado, @FechaVencimiento, @Cantidad, @Costo) ;
-
-					SELECT SCOPE_IDENTITY();
-					", articulo);
+				var id = await connection
+					.QuerySingleAsync<int>      //QuerySingleAsycn es para indicar que tendremos 1 solo resultado
+					(@"Articulos_Crear", 
+					new 
+					{
+						articulo.Descripcion, 
+						articulo.FechaIngreso, 
+						articulo.Estado,
+						articulo.FechaVencimiento,
+						articulo.Cantidad,
+						articulo.Costo
+					}, commandType: CommandType.StoredProcedure);
 
 				articulo.Id = id;
 				return id;
@@ -37,7 +41,9 @@ namespace ADO_NET_DAPPER.Repositories.Articulos
 		{
 			using (var connection = new SqlConnection(connectionString))
 			{
-				var articulos = await connection.QueryAsync<Articulo>("Articulos_ObtenerTodos", commandType: CommandType.StoredProcedure);
+				var articulos = await connection
+					.QueryAsync<Articulo>
+					("Articulos_ObtenerTodos", commandType: CommandType.StoredProcedure);
 				return articulos.ToList();
 			}
 		}
@@ -46,7 +52,9 @@ namespace ADO_NET_DAPPER.Repositories.Articulos
 		{
 			using (var connection = new SqlConnection(connectionString))
 			{
-				var articulo = await connection.QueryFirstOrDefaultAsync<Articulo>(@"SELECT * FROM Articulo WHERE Id = @id", new {id});
+				var articulo = await connection
+					.QueryFirstOrDefaultAsync<Articulo>
+					("Articulos_ObtenerPorId", new { id }, commandType: CommandType.StoredProcedure);
 				return articulo;
 			}
 		}
@@ -57,10 +65,7 @@ namespace ADO_NET_DAPPER.Repositories.Articulos
 			{
 				var existe = await connection
 					.QuerySingleAsync<bool>
-					(@"IF EXISTS (SELECT 1 FROM Articulo WHERE Id = @Id)
-						SELECT 1
-					ELSE
-						SELECT 0", new {id});
+					(@"Articulos_Existe", new {id}, commandType: CommandType.StoredProcedure);
 
 				return existe;
 			}
@@ -70,18 +75,9 @@ namespace ADO_NET_DAPPER.Repositories.Articulos
 		{
 			using (var connection = new SqlConnection(connectionString))
 			{
-				await connection.ExecuteAsync(@"UPDATE Articulo
-												SET 
-												Descripcion = @Descripcion,
-												FechaIngreso = @FechaIngreso,
-												Estado = @Estado,
-												FechaVencimiento = @FechaVencimiento,
-												Cantidad = @Cantidad,
-												Costo = @Costo
-												WHERE Id = @id
-												", articulo);
-
-
+				await connection
+					.ExecuteAsync
+					("Articulos_Actualizar", articulo, commandType: CommandType.StoredProcedure);
 			}
 		}
 
@@ -89,8 +85,9 @@ namespace ADO_NET_DAPPER.Repositories.Articulos
 		{
 			using(var connection = new SqlConnection(connectionString))
 			{
-				await connection.ExecuteAsync(@"DELETE Articulo
-												WHERE Id = @Id", new {id});
+				await connection
+					.ExecuteAsync
+					(@"Articulos_Borrar", new {id}, commandType: CommandType.StoredProcedure);
 			}
 		}
 	}

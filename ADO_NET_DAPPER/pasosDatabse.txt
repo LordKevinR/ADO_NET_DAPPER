@@ -67,7 +67,7 @@ CREATE TABLE Estado (
 );
 
 CREATE TABLE Transaccion (
-    Id INT PRIMARY KEY,
+    Id INT IDENTITY(1,1) PRIMARY KEY,
     Descripcion VARCHAR(255) NULL,
     TipoTransaccionId INT,
     ArticuloId INT,
@@ -128,4 +128,114 @@ probar conexion
 
 			return Task.FromResult(0);
 		}
+
+
+
+
+
+
+
+store procedure
+
+
+
+
+
+
+-- ================================================
+-- Template generated from Template Explorer using:
+-- Create Procedure (New Menu).SQL
+--
+-- Use the Specify Values for Template Parameters 
+-- command (Ctrl-Shift-M) to fill in the parameter 
+-- values below.
+--
+-- This block of comments will not be included in
+-- the definition of the procedure.
+-- ================================================
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE Articulos_Crear 
+
+	@Descripcion varchar(255),
+	@FechaIngreso date, 
+	@Estado bit, 
+	@FechaVencimiento date, 
+	@Cantidad int, 
+	@Costo decimal(18,2)
+	
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	INSERT INTO Articulo 
+	(Descripcion, FechaIngreso, Estado, FechaVencimiento, Cantidad, Costo) 
+	VALUES
+	(@Descripcion, @FechaIngreso, @Estado, @FechaVencimiento, @Cantidad, @Costo) ;
+
+	SELECT SCOPE_IDENTITY();
+END
+GO
+
+
+
+
+
+
+
+
+
+USE [MinimalApiConDapper]
+GO
+/****** Object:  StoredProcedure [dbo].[Transacciones_Crear]    Script Date: 3/2/2024 11:32:02 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [dbo].[Transacciones_Crear]
+
+	@Descripcion varchar(255),
+	@TipoTransaccionId int,
+	@ArticuloId int,
+	@FechaDocumento date,
+	@EstadoId int,
+	@Cantidad int,
+	@CostoTotal decimal(18,2)
+
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	INSERT INTO Transaccion 
+	( Descripcion, TipoTransaccionId, ArticuloId, 
+	FechaDocumento, EstadoId, Cantidad, CostoTotal )
+	VALUES 
+	( @Descripcion, @TipoTransaccionId, @ArticuloId, 
+	@FechaDocumento, @EstadoId, @Cantidad, @CostoTotal )
+
+	SELECT SCOPE_IDENTITY();
+END
+
+
+
+
+
 

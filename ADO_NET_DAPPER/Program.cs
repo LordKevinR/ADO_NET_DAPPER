@@ -1,7 +1,8 @@
 using ADO_NET_DAPPER.Endpoints.Articulos;
+using ADO_NET_DAPPER.Endpoints.Transacciones;
 using ADO_NET_DAPPER.Entities;
-using ADO_NET_DAPPER.Repositories;
 using ADO_NET_DAPPER.Repositories.Articulos;
+using ADO_NET_DAPPER.Repositories.Transacciones;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +38,7 @@ app.UseSwaggerUI();
 app.UseCors("NuevaPolitica");
 
 app.MapGroup("/articulos").MapArticulos();
+app.MapGroup("/transacciones").MapTransacciones();
 
 
 // end middleware
