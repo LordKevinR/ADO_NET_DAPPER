@@ -103,15 +103,15 @@ VALUES
 
 INSERT INTO Estado (Descripcion)
 VALUES 
-    ('Activo'),
-    ('Inactivo');
+    ('Completa'),
+    ('Incompleta');
 
 
-INSERT INTO Transaccion (Id, Descripcion, TipoTransaccionId, ArticuloId, FechaDocumento, EstadoId, Cantidad, CostoTotal)
+INSERT INTO Transaccion (Descripcion, TipoTransaccionId, ArticuloId, FechaDocumento, EstadoId, Cantidad, CostoTotal)
 VALUES 
-    (1, 'Transaccion 1', 1, 1, '2022-05-01', 1, 20, 1000.00),
-    (2, 'Transaccion 2', 2, 2, '2022-06-15', 2, 15, 375.00),
-    (3, 'Transaccion 3', 1, 3, '2022-08-20', 1, 30, 900.00);
+    ('Transaccion 1', 1, 1, '2022-05-01', 1, 20, 1000.00),
+    ('Transaccion 2', 2, 2, '2022-06-15', 2, 15, 375.00),
+    ('Transaccion 3', 1, 3, '2022-08-20', 1, 30, 900.00);
 
 
 
@@ -238,4 +238,106 @@ END
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+---------- React
+
+
+npm create vite@latest
+
+proyectoinventario
+
+React
+
+javaScript
+
+cd proyect + tab
+
+npm install
+
+code .
+
+npm run dev
+
+
+
+
+App.jsx ( borrar todo el return ), h1 = Proyecto inventario
+
+abrir 2da terminal 
+
+npm i -D tailwindcss postcss autoprefixer
+
+npx tailwindcss init -p
+
+en tailwind.config pondremos
+
+content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
+
+
+en index.css borramos todo pondremos:
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@tailwind variants;
+
+
+extensiones
+
+Tailwind CSS IntelliSense
+CSS Peek
+ES7+ React/Redux/React-Native snippets
+Simple React Snippets
+
+npm i react-router-dom
+
+
+eliminar app.css, app.jsx ( dara error ) 
+
+en main.jsx haremos los iguiente
+
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import './index.css'
+import { RouterProvider, createBrowserRouter } from 'react-router-dom'
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <div>Home</div>,
+  },
+])
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <RouterProvider router={router}/>
+  </React.StrictMode>,
+)
+
+
+src/components/Layout.jsx
+
+rfce
+
+
+por ahora solo hemos mostrado nuestros artiulos y transacciones
+
+ahora vamos a crear:
+
+NevoArticulo.jsx
 
